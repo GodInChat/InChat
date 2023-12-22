@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "inchat"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.5.3"
+pydantic-settings = "^2.1.0"
+fastapi = "^0.105.0"
+uvicorn = "^0.25.0"
+fastapi-users = {extras = ["oauth", "sqlalchemy"], version = "^12.1.2"}
+fastapi-mail = "^1.4.1"
+sqlalchemy = "^2.0.23"
+alembic = "^1.13.1"
+redis = "^5.0.1"
+asyncpg = "^0.29.0"
+bcrypt = "4.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
