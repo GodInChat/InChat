@@ -11,12 +11,13 @@ from src.inchat.database.sql.models import User
 from src.inchat.auth.service import current_user
 
 from src.inchat.auth.routes import router as auth
+from src.inchat.pdf.routes import router as pdf
 
 
 app = FastAPI()
 
 app.include_router(auth)
-
+app.include_router(pdf)
 
 @app.get("/")
 def read_root():
