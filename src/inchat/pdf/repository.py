@@ -10,11 +10,11 @@ import uuid
 
 class PdfQuery:
     @staticmethod
-    async def create(pdf_data: list[dict], user: User, session: AsyncSession) -> list[Pdf]:
-        pdfs = [Pdf(**instance, user_id=user.id) for instance in pdf_data]
-        session.add_all(pdfs)
+    async def create(pdf_name, user: User, session: AsyncSession) -> Pdf:
+        pdf = Pdf(id= uuid.uuid4(), pdf_name=pdf_name, user_id=user.id)
+        session.add(pdf)
         await session.commit()
-        return pdfs
+        return pdf
 
     @staticmethod
     async def read(pdf_id: uuid.UUID, session: AsyncSession) -> Pdf | None:

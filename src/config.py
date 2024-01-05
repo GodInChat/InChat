@@ -7,6 +7,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     postgres_db: str = Field()
+    postgres_vector_db: str = Field()
     postgres_user: str = Field()
     postgres_password: str = Field()
     postgres_port: int = Field()
@@ -25,10 +26,13 @@ class Settings(BaseSettings):
     mail_server: str = Field()
     mail_from_name: str = Field()
 
+    ollama_host: str = Field()
+    ollama_port: int = Field()
+    ollama_model: str = Field()
+
 
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
-
 
 settings = Settings()

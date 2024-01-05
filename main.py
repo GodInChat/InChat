@@ -12,12 +12,14 @@ from src.inchat.auth.service import current_user
 
 from src.inchat.auth.routes import router as auth
 from src.inchat.pdf.routes import router as pdf
+from src.inchat.chat.routes import router as chat
 
 
 app = FastAPI()
 
 app.include_router(auth)
 app.include_router(pdf)
+app.include_router(chat)
 
 @app.get("/")
 def read_root():

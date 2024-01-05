@@ -13,5 +13,5 @@ def save_pdf(image_files, user) -> list:
         path.touch()
         with open(path, "wb") as image:
             image.write(file.file.read())
-        output.append({'id': pdf_uuid, 'pdf_url': str(path), 'created_at': datetime.now()})
+        output.append({'id': pdf_uuid, 'pdf_url': str(path),'pdf_name': file, 'created_at': datetime.now()})
     return output

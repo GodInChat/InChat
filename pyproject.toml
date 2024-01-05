@@ -19,6 +19,11 @@ alembic = "^1.13.1"
 redis = "^5.0.1"
 asyncpg = "^0.29.0"
 bcrypt = "4.0.1"
+pypdf = "^3.17.4"
+langchain = "^0.0.354"
+pgvector = "^0.2.4"
+psycopg2-binary = "^2.9.9"
+langchainhub = "^0.1.14"
 
 
 [build-system]
