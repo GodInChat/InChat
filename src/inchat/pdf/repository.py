@@ -17,14 +17,18 @@ class PdfQuery:
         return pdf
 
     @staticmethod
-    async def read(pdf_id: uuid.UUID, session: AsyncSession) -> Pdf | None:
-        stmt = select(Pdf).where(Pdf.id == pdf_id)
+    async def read(pdf_id: uuid.UUID,user_id: uuid.UUID, session: AsyncSession) -> Pdf | None:
+        stmt = select(Pdf).where(Pdf.id == pdf_id, Pdf.user_id == user_id)
         pdf = await session.execute(stmt)
         return pdf.scalars().unique().one_or_none()
 
     @staticmethod
-    async def delete(pdf_id: uuid, session: AsyncSession) -> None:
-        stmt = select(Pdf).where(Pdf.id == pdf_id)
-        pdf = await session.execute(stmt)
+    async def get_all_pdfs_by_user_id(user_id: uuid.UUID, session: AsyncSession) -> list[Pdf]:
+        stmt = select(Pdf).where(Pdf.user_id == user_id)
+        pdfs = await session.execute(stmt)
+        return list(pdfs.scalars().unique().all())
+
+    @staticmethod
+    async def delete(pdf: Pdf, session: AsyncSession) -> None:
         await session.delete(pdf)
         await session.commit()

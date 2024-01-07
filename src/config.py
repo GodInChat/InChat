@@ -1,6 +1,7 @@
 from pydantic import Field
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
+from langchain.vectorstores.pgvector import PGVector
 
 load_dotenv()
 
@@ -26,8 +27,7 @@ class Settings(BaseSettings):
     mail_server: str = Field()
     mail_from_name: str = Field()
 
-    ollama_host: str = Field()
-    ollama_port: int = Field()
+    ollama_url: str = Field()
     ollama_model: str = Field()
 
 
@@ -36,3 +36,12 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 settings = Settings()
+
+
+vector_connection_string = PGVector.connection_string_from_db_params(
+    driver="psycopg2",
+    host=settings.postgres_host,
+    port=settings.postgres_port,
+    database=settings.postgres_vector_db,
+    user=settings.postgres_user,
+    password=settings.postgres_password)

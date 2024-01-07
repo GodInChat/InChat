@@ -31,7 +31,7 @@ def upgrade() -> None:
     op.create_table('messages',
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('chat_id', sa.Uuid(), nullable=False),
-    sa.Column('text', sa.String(length=300), nullable=False),
+    sa.Column('text', sa.String(length=10000), nullable=False),
     sa.Column('owner_type', sa.Enum('HumanMessage', 'AIMessage', name='owner_type'), nullable=False),
     sa.Column('crated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['chat_id'], ['chats.id'], ),

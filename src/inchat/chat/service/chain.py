@@ -3,30 +3,20 @@ from langchain.embeddings import OllamaEmbeddings
 from langchain import hub
 from langchain.chat_models import ChatOllama
 from langchain.vectorstores.pgvector import PGVector
-from langchain.schema import HumanMessage, AIMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from src.config import settings
+from src.config import vector_connection_string, settings
 
 
-ollama_url = f'http://{settings.ollama_host}:{settings.ollama_port}'
 model = settings.ollama_model
+ollama_url = settings.ollama_url
 
 llm = Ollama(base_url = ollama_url, model = model, temperature=0.3, top_p = 0.9, top_k = 40)
 chat = ChatOllama(base_url = ollama_url, model = model, temperature=0.3, top_p = 0.9, top_k = 40)
 embeddings = OllamaEmbeddings(base_url = ollama_url, model = model)
 output_parser = StrOutputParser()
 prompt = hub.pull("rlm/rag-prompt")
-
-connection_string = PGVector.connection_string_from_db_params(
-    driver="psycopg2",
-    host=settings.postgres_host,
-    port=settings.postgres_port,
-    database=settings.postgres_vector_db,
-    user=settings.postgres_user,
-    password=settings.postgres_password)
-
 
 contextualize_q_system_prompt = """Given a chat history and the latest user question \
 which might reference context in the chat history, formulate a standalone question \
@@ -60,10 +50,9 @@ def contextualized_question(data: dict):
 def get_chain_with_retriever(retriever_collection_name):
     store = PGVector(
         collection_name=retriever_collection_name,
-        connection_string=connection_string,
+        connection_string=vector_connection_string,
         embedding_function=embeddings,
     )
-
     retriever = store.as_retriever(search_type="similarity", search_kwargs={"k": 3})
     rag_chain = (RunnablePassthrough.assign(context=contextualized_question | retriever) | qa_prompt | llm)  # noqa
     return rag_chain
