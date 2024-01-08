@@ -7,9 +7,6 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    host: str = Field()
-    port: int = Field()
-
     postgres_db: str = Field()
     postgres_vector_db: str = Field()
     postgres_user: str = Field()
