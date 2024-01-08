@@ -1,11 +1,10 @@
 import uuid
-from datetime import datetime
 
 from fastapi_users_db_sqlalchemy import (
     SQLAlchemyBaseUserTableUUID,
     SQLAlchemyBaseOAuthAccountTableUUID,
 )
-from sqlalchemy import String, Integer, DateTime, Boolean, func, Uuid, Numeric, Enum
+from sqlalchemy import String, Text, Integer, DateTime, Boolean, func, Uuid, Numeric, Enum
 
 
 from sqlalchemy.orm import DeclarativeBase, relationship, Mapped, mapped_column
@@ -48,11 +47,8 @@ class Message(Base):
     __tablename__ = "messages"
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, unique=True, index=True)
     chat_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("chats.id"), nullable=False)
-    text: Mapped[str] = mapped_column(String(300), nullable=False, default="placeholder")
+    text: Mapped[str] = mapped_column(Text, nullable=False, default="placeholder")
     owner_type:Mapped[Enum] = mapped_column(Enum("HumanMessage", "AIMessage", name="owner_type"), nullable=False)
     created_at: Mapped[DateTime] = mapped_column("crated_at", DateTime, default=func.now(), nullable=False)
 
     chat : Mapped[Chat] = relationship("Chat", back_populates="messages", lazy="noload")
-
-
-
