@@ -2,7 +2,7 @@
 
 ## Base project set up
 
-1. ensure your postgres and redis instances are running
+1. ensure your postgres instances are running
 2. install virtual environment with poetry
 3. copy example.env file th the same directory, rename into .env
 4. edit credentials in .env file
