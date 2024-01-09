@@ -19,6 +19,7 @@ COPY alembic/ ./alembic/
 COPY alembic.ini ./
 COPY dbtest-sql.py ./
 COPY dbtest-vec.py ./
+COPY dbtest-noname-user.py ./
 COPY main.sh ./
 
 ENTRYPOINT [ "sh", "./main.sh" ]

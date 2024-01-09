@@ -15,6 +15,9 @@ python3 dbtest-vec.py
 RC=$?
 [ "$RC" -ne 0 -a "$RC" -ne 100 ] && exit 1
 
+# Nnsert into DB mandatory "noname" user
+python3 dbtest-noname-user.py
+
 [ -z "$HOST" ] && HOST=0.0.0.0
 [ -z "$PORT" ] && PORT=8000
 
