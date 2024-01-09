@@ -15,5 +15,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY main.py ./
 COPY .env ./
+COPY alembic/ ./alembic/
+COPY alembic.ini ./
+COPY dbtest-sql.py ./
+COPY dbtest-vec.py ./
+COPY main.sh ./
 
-ENTRYPOINT [ "sh", "-c", "[ -z \"$HOST\" ] && HOST=0.0.0.0; [ -z \"$PORT\" ] && PORT=8000; uvicorn main:app --host=$HOST --port=$PORT --reload" ]
+ENTRYPOINT [ "sh", "./main.sh" ]
