@@ -1,17 +1,19 @@
 # Based on https://hub.docker.com/r/robd003/python3.10
+# Image robd003/python3.10 was
+# `apt-get update && apt-get -y upgrade && apt-get autoremove`
+# The result is python3.10_upd
 
-FROM robd003/python3.10:latest
+FROM python3.10_upd:latest
 
 WORKDIR /usr/src/app
+
+RUN apt-get update && apt-get -y upgrade && apt-get autoremove
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
-# COPY alembic/ ./alembic/
-# COPY alembic.ini ./
 COPY main.py ./
 COPY .env ./
 
-# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-CMD [ "uvicorn", "main:app", "--reload" ]
+ENTRYPOINT [ "sh", "-c", "[ -z \"$HOST\" ] && HOST=0.0.0.0; [ -z \"$PORT\" ] && PORT=8000; uvicorn main:app --host=$HOST --port=$PORT --reload" ]

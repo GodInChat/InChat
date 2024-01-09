@@ -31,11 +31,14 @@ contextualize_q_prompt = ChatPromptTemplate.from_messages(
 )
 contextualize_q_chain = contextualize_q_prompt | llm | output_parser
 
+# If the question is not asked in English, then answer in Ukrainian. \
+
 qa_system_prompt = """You are an assistant for question-answering tasks. \
 Use the following pieces of retrieved context to answer the question. \
 If you don't know the answer, just say that you don't know. \
 Use up to five sentences maximum and keep the answer concise. \
-If the question is not asked in English, then answer in Ukrainian. \
+To answer question use always Ukrainian language. \
+If question is asked in English to answer use English language too. \
 
 {context}"""
 qa_prompt = ChatPromptTemplate.from_messages(
