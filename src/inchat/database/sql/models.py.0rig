@@ -42,6 +42,7 @@ class Chat(Base):
     messages: Mapped[list["Message"]] = relationship("Message", back_populates="chat", lazy="joined", cascade="all, delete")
 
 
+
 class Message(Base):
     __tablename__ = "messages"
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, unique=True, index=True)
@@ -51,12 +52,3 @@ class Message(Base):
     created_at: Mapped[DateTime] = mapped_column("crated_at", DateTime, default=func.now(), nullable=False)
 
     chat : Mapped[Chat] = relationship("Chat", back_populates="messages", lazy="noload")
-
-
-class Link(Base):
-    __tablename__ = "links"
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, unique=True, index=True)
-    # user_id is not id of noname user: it is id of author who was created link
-    user_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("user.id"), nullable=True)
-    text: Mapped[str] = mapped_column(String(512), nullable=False, default="placeholder")
-    created_at: Mapped[DateTime] = mapped_column("crated_at", DateTime, default=func.now(), nullable=False)
