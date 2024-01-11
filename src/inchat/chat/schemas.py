@@ -34,6 +34,13 @@ class ChatSchemaResponse(BaseModel):
 # New schemas added
 
 
+# class Chat2SchemaResponse(BaseModel):
+#     model_config = ConfigDict(extra='ignore', from_attributes=True)
+#
+#     id: uuid.UUID
+#     created_at: datetime
+
+
 class NewMessage2ChatSchemaRequest(BaseModel):
     model_config = ConfigDict(extra='ignore', from_attributes=True)
 
@@ -68,7 +75,6 @@ class Chat2SchemaResponse(BaseModel):
 class LinkChatSchemaRequest(BaseModel):
     model_config = ConfigDict(extra='ignore', from_attributes=True)
 
-    user_id: uuid.UUID # author id
     pdf_id: uuid.UUID
     text: str
 

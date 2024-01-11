@@ -57,7 +57,15 @@ async def delete_chat(chat_id: uuid.UUID, user: User = Depends(current_user), db
     await ChatQuery.delete_chat(chat, db)
 
 
+# Chat with unregistered user
+
 @router.post("/link", response_model=LinkChatSchemaRespond)
 async def link_chat(body: LinkChatSchemaRequest, user: User = Depends(current_user), db: AsyncSession = Depends(database)):
     link_tg = await ChatQuery.link(user.id, body.pdf_id, body.text, db)
     return { "link_tg": link_tg }
+
+
+#@router.post("/init2", response_model=ChatSchemaResponse, status_code=status.HTTP_201_CREATED)
+#async def init_chat(body: InitCharSchemaRequest, db: AsyncSession = Depends(database)):
+#    chat = await ChatQuery.create(user.id, db)
+#    return chat
