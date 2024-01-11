@@ -56,7 +56,9 @@ class Message(Base):
 class Link(Base):
     __tablename__ = "links"
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, unique=True, index=True)
+    link_tg: Mapped[str] = mapped_column(String(128), nullable=False)
     # user_id is not id of noname user: it is id of author who was created link
     user_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("user.id"), nullable=True)
-    text: Mapped[str] = mapped_column(String(512), nullable=False, default="placeholder")
+    pdf_id: Mapped[uuid.UUID] = mapped_column(Uuid, nullable=True)
+    text: Mapped[str] = mapped_column(String(512), nullable=False, default="")
     created_at: Mapped[DateTime] = mapped_column("crated_at", DateTime, default=func.now(), nullable=False)

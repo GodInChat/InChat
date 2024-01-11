@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.inchat.database.sql.models import Chat, Message
+from src.inchat.database.sql.models import Chat, Message, Link
 
 import uuid
 import datetime
@@ -17,7 +17,7 @@ class ChatQuery:
         return chat
 
     @staticmethod
-    async def read(chat_id: uuid.UUID,user_id: uuid.UUID, session: AsyncSession) -> Chat | None:
+    async def read(chat_id: uuid.UUID, user_id: uuid.UUID, session: AsyncSession) -> Chat | None:
         stmt = select(Chat).where(Chat.id == chat_id, Chat.user_id == user_id)
         chat = await session.execute(stmt)
         return chat.scalars().unique().one_or_none()
@@ -29,13 +29,20 @@ class ChatQuery:
         return list(chat.scalars().unique().all())
 
     @staticmethod
-    async def delete_chat(chat:Chat, session: AsyncSession) -> None:
+    async def delete_chat(chat: Chat, session: AsyncSession) -> None:
         await session.delete(chat)
         await session.commit()
+    #
+    # @staticmethod
+    # async def delete(pdf_id: uuid, session: AsyncSession) -> None:
+    #     stmt = select(Pdf).where(Pdf.id == pdf_id)
+    #     pdf = await session.execute(stmt)
+    #     await session.delete(pdf)
+    #     await session.commit()
 
 
     @staticmethod
-    async def append_chat_history(chat_id:uuid.UUID,messages: list[Message],times: list[datetime], session: AsyncSession) -> None:
+    async def append_chat_history(chat_id: uuid.UUID, messages: list[Message], times: list[datetime], session: AsyncSession) -> None:
 
         human_message = Message(id=uuid.uuid4(),
                                 chat_id=chat_id,
@@ -53,10 +60,17 @@ class ChatQuery:
         await session.commit()
 
 
-    #
-    # @staticmethod
-    # async def delete(pdf_id: uuid, session: AsyncSession) -> None:
-    #     stmt = select(Pdf).where(Pdf.id == pdf_id)
-    #     pdf = await session.execute(stmt)
-    #     await session.delete(pdf)
-    #     await session.commit()
+    @staticmethod
+    async def link(user_id: uuid.UUID, pdf_id: uuid, text: str, session: AsyncSession) -> str:
+        link_id = uuid.uuid4()
+        link_tg = f"https://t.me/InChabot?start={str(link_id).replace('-', '_')}"
+        record_link = Link(id=link_id,
+                           link_tg=link_tg,
+                           user_id=user_id,
+                           pdf_id=pdf_id,
+                           text=text
+                          )
+        session.add(record_link)
+        await session.commit()
+
+        return link_tg
